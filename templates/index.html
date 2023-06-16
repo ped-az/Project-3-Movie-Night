@@ -1,47 +1,138 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Movie Night Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-    <h1>Movie Night Randomiser Dashboard</h1>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="fluid-container">
+      <div class="mx-3">
+        <h1>Movie Night Project</h1>
+        <p>Presented by: ..., ..., ...</p>
+        <a href="/" class="btn btn-primary">Data</a>
+        <a href="/dashboard" class="btn btn-danger">Dashboard</a>
+        <hr />
+        <h2>Data Overview</h2>
+        <p>Note: Not all data columns are displayed</p>
 
-    <table id="movies-table">
-        <thead>
-            <tr>
-                <th>Released Year</th>
-                <th>Certificate</th>
-                <th>Director</th>
-                <th>Genre 1</th>
-                <th>Genre 2</th>
-                <th>Genre 3</th>
-                <th>No of Genres</th>
-                <th>Runtime</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+        <div class="input-group mb-3">
+          <span class="input-group-text">SORT BY</span>
+          <select class="form-select" id="sort-by"></select>
+        </div>
+        <table
+          id="movie-table"
+          class="table table-sm table-striped table-bordered"
+        ></table>
+      </div>
+    </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous"
+    ></script> -->
+
     <script>
-        $(document).ready(function() {
-            $.getJSON('/api/movies', function(data) {
-                var moviesTable = $('#movies-table tbody');
-                $.each(data, function(index, movie) {
-                    var row = $('<tr>');
-                    row.append($('<td>').text(movie.Released_Year));
-                    row.append($('<td>').text(movie.Certificate));
-                    row.append($('<td>').text(movie.Director));
-                    row.append($('<td>').text(movie.Genre_1));
-                    row.append($('<td>').text(movie.Genre_2));
-                    row.append($('<td>').text(movie.Genre_3));
-                    row.append($('<td>').text(movie.No_of_Genres));
-                    row.append($('<td>').text(movie.Runtime));
-                    moviesTable.append(row);
-                });
-            });
+      // Fetch data from api
+      const tableHeaders = [
+        "Series_Title",
+        "Released_Year",
+        "Certificate",
+        "Director",
+        "Genre_1",
+        "Runtime",
+        "Meta_score",
+        "IMDB_Rating",
+        "No_of_Votes",
+        "Gross",
+      ];
+      const sortFields = [
+        "IMDB_Rating",
+        "Runtime",
+        "Meta_score",
+        "No_of_Votes",
+        "Gross",
+        "Released_Year",
+      ];
+      const sortBy = document.getElementById("sort-by");
+      let sortByHTML = "";
+      sortFields.forEach((header, index) => {
+        sortByHTML += `<option value=${index}>${header}</option>`;
+      });
+      sortBy.innerHTML = sortByHTML;
+      sortBy.addEventListener("change", (e) => {
+        const optionIndex = e.target.value;
+        const selectedField = sortFields[optionIndex];
+        console.log(selectedField);
+        getData(selectedField);
+      });
+      getData(sortFields[0]);
+
+      async function getData(selectedHeader) {
+        const url = `/api/sorted_movies/${selectedHeader}`;
+        console.log(url);
+        const response = await fetch(url);
+        const movie_data = await response.json();
+        console.log(movie_data);
+
+        const tableBody = document.getElementById("movie-table");
+
+        let tableHTML = "<tr>";
+
+        tableHeaders.forEach((header) => {
+          tableHTML += `<th>${header}</th>`;
         });
+        tableHTML += "</tr>";
+
+        movie_data.forEach((movie) => {
+          tableHTML += "<tr>";
+          tableHeaders.forEach((header) => {
+            tableHTML += `<td>${movie[header]}</td>`;
+          });
+          tableHTML += "</tr>";
+        });
+
+        tableBody.innerHTML = tableHTML;
+        return movie_data;
+      }
+
+      getData();
+
+      // movie_data.forEach((movie) => {
+      //   tableBodyHTML += `<`;
+      // });
+
+      // Insert data into table
+
+      // $(document).ready(function () {
+      //   $.getJSON("/api/movies", function (data) {
+      //     var moviesTable = $("#movies-table tbody");
+      //     $.each(data, function (index, movie) {
+      //       var row = $("<tr>");
+      //       row.append($("<td>").text(movie.Series_Title));
+      //       row.append($("<td>").text(movie.Released_Year));
+      //       row.append($("<td>").text(movie.Certificate));
+      //       row.append($("<td>").text(movie.Director));
+      //       row.append($("<td>").text(movie.Genre_1));
+      //       row.append($("<td>").text(movie.Genre_2));
+      //       row.append($("<td>").text(movie.Genre_3));
+      //       row.append($("<td>").text(movie.No_of_Genres));
+      //       row.append($("<td>").text(movie.Runtime));
+      //       row.append($("<td>").text(movie.Gross));
+      //       moviesTable.append(row);
+      //     });
+      //   });
+      // });
     </script>
-</body>
-</
+  </body>
+</html>

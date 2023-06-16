@@ -36,9 +36,32 @@ cursor = conn.cursor()
 def index():
     return render_template('index.html')
 
-@app.route('/api/movies')
-def get_movies():
-    cursor.execute("SELECT * FROM movies")
+@app.route('/dashboard')
+def dashboad():
+    return render_template('dashboard.html')
+
+@app.route('/api/movies/')
+def get_all_movies():
+    query = f'SELECT * FROM movies'
+    cursor.execute(query)
+    columns = [column[0] for column in cursor.description]
+    rows = cursor.fetchall()
+    result = [dict(zip(columns, row)) for row in rows]
+    return jsonify(result)
+
+@app.route('/api/sorted_movies/<attribute>')
+def get_sorted_movies(attribute):
+    query = f'SELECT * FROM movies ORDER BY {attribute} DESC'
+    cursor.execute(query)
+    columns = [column[0] for column in cursor.description]
+    rows = cursor.fetchall()
+    result = [dict(zip(columns, row)) for row in rows]
+    return jsonify(result)
+
+@app.route('/api/top_movies/<attribute>')
+def get_top_movies(attribute):
+    query = f'SELECT * FROM movies ORDER BY {attribute} DESC LIMIT 10'
+    cursor.execute(query)
     columns = [column[0] for column in cursor.description]
     rows = cursor.fetchall()
     result = [dict(zip(columns, row)) for row in rows]
