@@ -10,10 +10,12 @@
     <table id="movies-table">
         <thead>
             <tr>
-                <th>Released_Year</th>
+                <th>Released Year</th>
                 <th>Certificate</th>
                 <th>Director</th>
                 <th>Genre</th>
+                <th>Main Genre</th>
+                <th>No of Genres</th>
                 <th>Runtime</th>
             </tr>
         </thead>
@@ -31,6 +33,8 @@
                     row.append($('<td>').text(movie.Certificate));
                     row.append($('<td>').text(movie.Director));
                     row.append($('<td>').text(movie.Genre));
+                    row.append($('<td>').text(movie.Main_Genre));
+                    row.append($('<td>').text(movie.No_of_Genres));
                     row.append($('<td>').text(movie.Runtime));
                     moviesTable.append(row);
                 });

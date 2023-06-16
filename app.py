@@ -6,7 +6,7 @@ from flask import Flask, render_template, jsonify
 from sqlalchemy.orm import Session 
 
 
-data = pd.read_csv('imdb_top_1000.csv')
+data = pd.read_csv('imdb_top_1000_cleaned.csv')
 
 engine= create_engine('sqlite:///movies.db')
 
