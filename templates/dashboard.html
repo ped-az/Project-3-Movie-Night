@@ -168,7 +168,7 @@
         });
         const top10IMDBData = await getTop10MovieData("IMDB");
         new Chart(document.getElementById("top-imdb"), {
-          type: "bar",
+          type: "line",
           data: {
             labels: top10IMDBData.map((x) => x.Title),
             datasets: [
@@ -227,10 +227,10 @@
             ),
             datasets: [
               {
-                type: "bar",
+                type: "line",
                 label: "Top 10 Directors by Average IMDB Rating",
                 data: top10DirectorByIMDBData.map((x) => x.imdb),
-                // backgroundColor: "#318d35",
+                backgroundColor: "#318CE7",
               },
             ],
           },
