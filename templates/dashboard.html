@@ -29,46 +29,44 @@
               <div
                 class="d-flex flex-column justify-content-center align-items-center rounded rounded-3 p-3 text-bg-primary statistic"
               >
-                <h3 class="text-center">Number of Movies</h3>
+                <h4 class="text-center">Number of Movies</h4>
                 <div class="text-center">From 1920 to 2020</div>
-                <div class="fs-1 text-center">999</div>
+                <div class="fs-2 text-center">999</div>
               </div>
             </div>
             <div class="col-3">
               <div
                 class="d-flex flex-column justify-content-center align-items-center rounded rounded-3 p-3 text-bg-primary statistic"
               >
-                <h3 class="text-center">Top 1 Movie by Gross</h3>
+                <h4 class="text-center">Total Gross</h4>
 
-                <div class="text-center">
-                  Star Wars: Episode VII - The Force Awakens
-                </div>
-                <div class="fs-1 text-center">$936,662,225</div>
+                <div class="text-center">Top 1: Star Wars: Episode VII</div>
+                <div class="fs-2 text-center">$56,363,040,043</div>
               </div>
             </div>
             <div class="col-3">
               <div
                 class="d-flex flex-column justify-content-center align-items-center rounded rounded-3 p-3 text-bg-primary statistic"
               >
-                <h3 class="text-center">Top 1 Movie by Rating</h3>
+                <h4 class="text-center">Top 1 Movie by Rating</h4>
 
                 <div class="text-center">The Shawshank Redemption</div>
-                <div class="fs-1 text-center">$28,341,469</div>
+                <div class="fs-2 text-center">$28,341,469</div>
               </div>
             </div>
             <div class="col-3">
               <div
                 class="d-flex flex-column justify-content-center align-items-center rounded rounded-3 p-3 text-bg-primary statistic"
               >
-                <h3 class="text-center">Top 1 Genre</h3>
+                <h4 class="text-center">Top 1 Genre</h4>
                 <div class="text-center">Drama</div>
-                <div class="fs-1 text-center">289</div>
+                <div class="fs-2 text-center">289</div>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-6"><canvas id="bubble-chart"></canvas></div>
-            <div class="col-6"><canvas id="top-genre"></canvas></div>
+            <div class="col-8"><canvas id="bubble-chart"></canvas></div>
+            <div class="col-4"><canvas id="top-genre"></canvas></div>
           </div>
           <div class="row">
             <div class="col-6"><canvas id="top-imdb"></canvas></div>
@@ -132,14 +130,14 @@
       (async function () {
         const genreData = await getGenreData();
         new Chart(document.getElementById("top-genre"), {
-          type: "bar",
+          type: "doughnut",
           data: {
-            labels: genreData.map((x) => `${x.Genre_1}`),
+            labels: genreData.map((x) => x.Genre_1),
             datasets: [
               {
-                label: "Genres",
-                data: genreData.map((x) => x.count),
-                backgroundColor: "#ffbf00",
+                label: "Percentage",
+                data: genreData.map((x) => (x.count / 999) * 100),
+                // backgroundColor: "#ffbf00",
               },
             ],
           },
@@ -148,7 +146,7 @@
         new Chart(document.getElementById("top-imdb"), {
           type: "bar",
           data: {
-            labels: top10IMDBData.map((x) => `${x.Series_Title}`),
+            labels: top10IMDBData.map((x) => x.Series_Title),
             datasets: [
               {
                 label: "Top 10 Movies by IMDB Rating",
@@ -163,7 +161,7 @@
         new Chart(document.getElementById("top-gross"), {
           type: "bar",
           data: {
-            labels: top10GrossData.map((x) => `${x.Series_Title}`),
+            labels: top10GrossData.map((x) => x.Series_Title),
             datasets: [
               {
                 label: "Top 10 Movies by Gross",
