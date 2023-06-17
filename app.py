@@ -37,7 +37,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/dashboard')
-def dashboad():
+def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/api/movies/')
@@ -61,6 +61,15 @@ def get_sorted_movies(attribute):
 @app.route('/api/top_movies/<attribute>')
 def get_top_movies(attribute):
     query = f'SELECT * FROM movies ORDER BY {attribute} DESC LIMIT 10'
+    cursor.execute(query)
+    columns = [column[0] for column in cursor.description]
+    rows = cursor.fetchall()
+    result = [dict(zip(columns, row)) for row in rows]
+    return jsonify(result)
+
+@app.route('/api/genre/')
+def get_genre_data():
+    query = f'SELECT Genre_1, COUNT(Genre_1) as count FROM movies GROUP BY Genre_1 ORDER BY count DESC'
     cursor.execute(query)
     columns = [column[0] for column in cursor.description]
     rows = cursor.fetchall()
