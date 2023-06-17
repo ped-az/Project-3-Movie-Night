@@ -69,7 +69,25 @@ def get_top_movies(attribute):
 
 @app.route('/api/genre/')
 def get_genre_data():
-    query = f'SELECT Genre_1, COUNT(Genre_1) as count FROM movies GROUP BY Genre_1 ORDER BY count DESC'
+    query = f'SELECT Genre1, COUNT(Genre1) as count FROM movies GROUP BY Genre1 ORDER BY count DESC'
+    cursor.execute(query)
+    columns = [column[0] for column in cursor.description]
+    rows = cursor.fetchall()
+    result = [dict(zip(columns, row)) for row in rows]
+    return jsonify(result)
+
+@app.route('/api/director/Gross')
+def get_director_by_gross():
+    query = f'SELECT Director, COUNT(Director) as count, SUM(Gross) as gross FROM movies GROUP BY Director ORDER BY gross DESC LIMIT 10'
+    cursor.execute(query)
+    columns = [column[0] for column in cursor.description]
+    rows = cursor.fetchall()
+    result = [dict(zip(columns, row)) for row in rows]
+    return jsonify(result)
+
+@app.route('/api/director/IMDB')
+def get_director_by_imdb():
+    query = f'SELECT Director, COUNT(Director) as count, AVG(IMDB) as imdb FROM movies GROUP BY Director ORDER BY imdb DESC LIMIT 10'
     cursor.execute(query)
     columns = [column[0] for column in cursor.description]
     rows = cursor.fetchall()

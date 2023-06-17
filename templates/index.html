@@ -45,25 +45,25 @@
     <script>
       // Fetch data from api
       const tableHeaders = [
-        "Poster_Link",
-        "Series_Title",
-        "Released_Year",
+        "Poster",
+        "Title",
+        "Year",
         "Certificate",
         "Director",
-        "Genre_1",
+        "Genre1",
         "Runtime",
-        "Meta_score",
-        "IMDB_Rating",
-        "No_of_Votes",
+        "MetaScore",
+        "IMDB",
+        "Votes",
         "Gross",
       ];
       const sortFields = [
-        "IMDB_Rating",
+        "IMDB",
         "Runtime",
-        "Meta_score",
-        "No_of_Votes",
+        "MetaScore",
+        "Votes",
         "Gross",
-        "Released_Year",
+        "Year",
       ];
       const sortBy = document.getElementById("sort-by");
       let sortByHTML = "";
@@ -98,7 +98,7 @@
         movie_data.forEach((movie) => {
           tableHTML += "<tr>";
           tableHeaders.forEach((header) => {
-            if (header === "Poster_Link") {
+            if (header === "Poster") {
               tableHTML += `<td><img src="${movie[header]}"></td>`;
             } else {
               tableHTML += `<td>${movie[header]}</td>`;

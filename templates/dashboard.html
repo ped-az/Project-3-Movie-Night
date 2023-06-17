@@ -16,7 +16,7 @@
   </head>
   <body>
     <div class="fluid-container bg-light">
-      <div class="mx-3">
+      <div class="mx-3 pb-5">
         <h1>Project 3: Movie Night</h1>
         <p>Presented by: ..., ..., ...</p>
         <a href="/" class="btn btn-primary">Data</a>
@@ -40,7 +40,7 @@
               >
                 <h4 class="text-center">Total Gross</h4>
 
-                <div class="text-center">Top 1: Star Wars: Episode VII</div>
+                <div class="text-center">---</div>
                 <div class="fs-2 text-center">$56,363,040,043</div>
               </div>
             </div>
@@ -72,6 +72,12 @@
             <div class="col-6"><canvas id="top-imdb"></canvas></div>
             <div class="col-6"><canvas id="top-gross"></canvas></div>
           </div>
+          <div class="row">
+            <div class="col-6"><canvas id="top-director-by-imdb"></canvas></div>
+            <div class="col-6">
+              <canvas id="top-director-by-gross"></canvas>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -80,24 +86,24 @@
 
     <script>
       const tableHeaders = [
-        "Series_Title",
-        "Released_Year",
+        "Title",
+        "Year",
         "Certificate",
         "Director",
-        "Genre_1",
+        "Genre1",
         "Runtime",
-        "Meta_score",
-        "IMDB_Rating",
-        "No_of_Votes",
+        "MetaScore",
+        "IMDB",
+        "Votes",
         "Gross",
       ];
       const sortFields = [
-        "IMDB_Rating",
+        "IMDB",
         "Runtime",
-        "Meta_score",
-        "No_of_Votes",
+        "MetaScore",
+        "Votes",
         "Gross",
-        "Released_Year",
+        "Year",
       ];
 
       async function getAllMovieData() {
@@ -109,7 +115,7 @@
         return data;
       }
 
-      async function getTop10lMovieData(attribute) {
+      async function getTop10MovieData(attribute) {
         const url = `/api/top_movies/${attribute}`;
         console.log(url);
         const response = await fetch(url);
@@ -127,12 +133,30 @@
         return data;
       }
 
+      async function getTop10DirectorByGross() {
+        const url = `/api/director/Gross`;
+        console.log(url);
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log("genreData", data);
+        return data;
+      }
+
+      async function getTop10DirectorByIMDB() {
+        const url = `/api/director/IMDB`;
+        console.log(url);
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log("genreData", data);
+        return data;
+      }
+
       (async function () {
         const genreData = await getGenreData();
         new Chart(document.getElementById("top-genre"), {
           type: "doughnut",
           data: {
-            labels: genreData.map((x) => x.Genre_1),
+            labels: genreData.map((x) => x.Genre1),
             datasets: [
               {
                 label: "Percentage",
@@ -142,31 +166,71 @@
             ],
           },
         });
-        const top10IMDBData = await getTop10lMovieData("IMDB_Rating");
+        const top10IMDBData = await getTop10MovieData("IMDB");
         new Chart(document.getElementById("top-imdb"), {
           type: "bar",
           data: {
-            labels: top10IMDBData.map((x) => x.Series_Title),
+            labels: top10IMDBData.map((x) => x.Title),
             datasets: [
               {
                 label: "Top 10 Movies by IMDB Rating",
-                data: top10IMDBData.map((x) => x.IMDB_Rating),
-                backgroundColor: "#3cb043",
+                data: top10IMDBData.map((x) => x.IMDB),
+                backgroundColor: "#3db042",
               },
             ],
           },
         });
 
-        const top10GrossData = await getTop10lMovieData("Gross");
+        const top10GrossData = await getTop10MovieData("Gross");
         new Chart(document.getElementById("top-gross"), {
-          type: "bar",
           data: {
-            labels: top10GrossData.map((x) => x.Series_Title),
+            labels: top10GrossData.map((x) => x.Title),
             datasets: [
               {
+                type: "bar",
                 label: "Top 10 Movies by Gross",
                 data: top10GrossData.map((x) => x.Gross),
                 backgroundColor: "#ff6384",
+              },
+              // {
+              //   type: "line",
+              //   label: "IMDB",
+              //   data: top10GrossData.map((x) => x.IMDB),
+              //   backgroundColor: "#ff6384",
+              // },
+            ],
+          },
+        });
+
+        const top10DirectorByGrossData = await getTop10DirectorByGross();
+        new Chart(document.getElementById("top-director-by-gross"), {
+          data: {
+            labels: top10DirectorByGrossData.map(
+              (x) => `${x.Director}: ${x.count} movies`
+            ),
+            datasets: [
+              {
+                type: "bar",
+                label: "Top 10 Directors by Total Gross",
+                data: top10DirectorByGrossData.map((x) => x.gross),
+                backgroundColor: "red",
+              },
+            ],
+          },
+        });
+
+        const top10DirectorByIMDBData = await getTop10DirectorByIMDB();
+        new Chart(document.getElementById("top-director-by-imdb"), {
+          data: {
+            labels: top10DirectorByIMDBData.map(
+              (x) => `${x.Director}: ${x.count} movies`
+            ),
+            datasets: [
+              {
+                type: "bar",
+                label: "Top 10 Directors by Average IMDB Rating",
+                data: top10DirectorByIMDBData.map((x) => x.imdb),
+                // backgroundColor: "#318d35",
               },
             ],
           },
@@ -178,7 +242,7 @@
           data: {
             labels: allMovieData.map(
               (x) =>
-                `${x.Series_Title}: ${new Intl.NumberFormat("en-AU", {
+                `${x.Title}: ${new Intl.NumberFormat("en-AU", {
                   style: "currency",
                   currency: "AUD",
                 }).format(x.Gross)}`
@@ -187,8 +251,8 @@
               {
                 label: "Gross",
                 data: allMovieData.map((row) => ({
-                  x: row.Released_Year,
-                  y: row.IMDB_Rating,
+                  x: row.Year,
+                  y: row.IMDB,
                   r: row.Gross / 25000000,
                 })),
                 hoverBackgroundColor: "red",
