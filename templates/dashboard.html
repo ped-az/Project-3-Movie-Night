@@ -17,7 +17,7 @@
   <body>
     <div class="fluid-container bg-light">
       <div class="mx-3">
-        <h1>Movie Night Project</h1>
+        <h1>Project 3: Movie Night</h1>
         <p>Presented by: ..., ..., ...</p>
         <a href="/" class="btn btn-primary">Data</a>
         <a href="/dashboard" class="btn btn-danger">Dashboard</a>
@@ -27,12 +27,12 @@
     </div>
 
     <div class="row">
-      <div class="col-6"><canvas id="bubble-chart"></canvas></div>
-      <div class="col-6"><canvas id="chart-4"></canvas></div>
+      <div class="col-6"><canvas id="top-imdb"></canvas></div>
+      <div class="col-6"><canvas id="top-gross"></canvas></div>
     </div>
     <div class="row">
-      <div class="col-6"><canvas id="top_imdb"></canvas></div>
-      <div class="col-6"><canvas id="top_gross"></canvas></div>
+      <div class="col-12"><canvas id="bubble-chart"></canvas></div>
+      <div class="col-6"><canvas id="chart-4"></canvas></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -59,17 +59,60 @@
         "Released_Year",
       ];
 
-      (async function () {
+      async function getAllMovieData() {
         const url = `/api/movies`;
         console.log(url);
         const response = await fetch(url);
         const data = await response.json();
         console.log(data);
+        return data;
+      }
 
+      async function getTop10lMovieData(attribute) {
+        const url = `/api/top_movies/${attribute}`;
+        console.log(url);
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data);
+        return data;
+      }
+
+      (async function () {
+        const top10IMDBData = await getTop10lMovieData("IMDB_Rating");
+        new Chart(document.getElementById("top-imdb"), {
+          type: "bar",
+          data: {
+            labels: top10IMDBData.map((x) => `${x.Series_Title}`),
+            datasets: [
+              {
+                label: "Top 10 Movies by IMDB Rating",
+                data: top10IMDBData.map((x) => x.IMDB_Rating),
+                backgroundColor: "green",
+              },
+            ],
+          },
+        });
+
+        const top10GrossData = await getTop10lMovieData("Gross");
+        new Chart(document.getElementById("top-gross"), {
+          type: "bar",
+          data: {
+            labels: top10GrossData.map((x) => `${x.Series_Title}`),
+            datasets: [
+              {
+                label: "Top 10 Movies by Gross",
+                data: top10GrossData.map((x) => x.Gross),
+                backgroundColor: "red",
+              },
+            ],
+          },
+        });
+
+        const allMovieData = await getAllMovieData();
         new Chart(document.getElementById("bubble-chart"), {
           type: "bubble",
           data: {
-            labels: data.map(
+            labels: allMovieData.map(
               (x) =>
                 `${x.Series_Title}: ${new Intl.NumberFormat("en-AU", {
                   style: "currency",
@@ -78,8 +121,8 @@
             ),
             datasets: [
               {
-                label: "Dimensions",
-                data: data.map((row) => ({
+                label: "Gross",
+                data: allMovieData.map((row) => ({
                   x: row.Released_Year,
                   y: row.IMDB_Rating,
                   r: row.Gross / 25000000,

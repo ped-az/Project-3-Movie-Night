@@ -17,7 +17,7 @@
   <body>
     <div class="fluid-container">
       <div class="mx-3">
-        <h1>Movie Night Project</h1>
+        <h1>Project 3: Movie Night</h1>
         <p>Presented by: ..., ..., ...</p>
         <a href="/" class="btn btn-primary">Data</a>
         <a href="/dashboard" class="btn btn-danger">Dashboard</a>
@@ -45,6 +45,7 @@
     <script>
       // Fetch data from api
       const tableHeaders = [
+        "Poster_Link",
         "Series_Title",
         "Released_Year",
         "Certificate",
@@ -97,7 +98,11 @@
         movie_data.forEach((movie) => {
           tableHTML += "<tr>";
           tableHeaders.forEach((header) => {
-            tableHTML += `<td>${movie[header]}</td>`;
+            if (header === "Poster_Link") {
+              tableHTML += `<td><img src="${movie[header]}"></td>`;
+            } else {
+              tableHTML += `<td>${movie[header]}</td>`;
+            }
           });
           tableHTML += "</tr>";
         });
