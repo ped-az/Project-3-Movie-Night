@@ -40,7 +40,7 @@
               >
                 <h4 class="text-center">Total Gross</h4>
 
-                <div class="text-center">---</div>
+                <div class="text-center">of 830 movies</div>
                 <div class="fs-2 text-center">$56,363,040,043</div>
               </div>
             </div>
@@ -48,10 +48,10 @@
               <div
                 class="d-flex flex-column justify-content-center align-items-center rounded rounded-3 p-3 text-bg-primary statistic"
               >
-                <h4 class="text-center">Top 1 Movie by Rating</h4>
+                <h4 class="text-center">Top 1 Movie</h4>
 
-                <div class="text-center">The Shawshank Redemption</div>
-                <div class="fs-2 text-center">$28,341,469</div>
+                <div class="text-center">by IMDB Rating</div>
+                <div class="fs-2 text-center">The Shawshank Redemption</div>
               </div>
             </div>
             <div class="col-3">
@@ -59,8 +59,8 @@
                 class="d-flex flex-column justify-content-center align-items-center rounded rounded-3 p-3 text-bg-primary statistic"
               >
                 <h4 class="text-center">Top 1 Genre</h4>
-                <div class="text-center">Drama</div>
-                <div class="fs-2 text-center">289</div>
+                <div class="text-center">with 289 movies</div>
+                <div class="fs-2 text-center">Drama</div>
               </div>
             </div>
           </div>
@@ -69,13 +69,20 @@
             <div class="col-4"><canvas id="top-genre"></canvas></div>
           </div>
           <div class="row">
-            <div class="col-6"><canvas id="top-imdb"></canvas></div>
-            <div class="col-6"><canvas id="top-gross"></canvas></div>
+            <div class="col-5">
+              <h5 class="mb-4">Top 10 Movies by IMDB Rating</h5>
+              <table id="top-imdb" class="table table-sm table-striped"></table>
+            </div>
+            <div class="col-7"><canvas id="top-gross"></canvas></div>
           </div>
           <div class="row">
-            <div class="col-6"><canvas id="top-director-by-imdb"></canvas></div>
+            <div class="col-6"><canvas id="top-genre-by-gross"></canvas></div>
             <div class="col-6">
-              <canvas id="top-director-by-gross"></canvas>
+              <h5 class="mb-4">Top 10 Directors by Gross</h5>
+              <table
+                id="top-director-by-gross"
+                class="table table-sm table-striped"
+              ></table>
             </div>
           </div>
         </div>
@@ -142,8 +149,8 @@
         return data;
       }
 
-      async function getTop10DirectorByIMDB() {
-        const url = `/api/director/IMDB`;
+      async function getTop10GenresByGross() {
+        const url = `/api/genre/Gross`;
         console.log(url);
         const response = await fetch(url);
         const data = await response.json();
@@ -161,25 +168,58 @@
               {
                 label: "Percentage",
                 data: genreData.map((x) => (x.count / 999) * 100),
-                // backgroundColor: "#ffbf00",
               },
             ],
           },
         });
+
         const top10IMDBData = await getTop10MovieData("IMDB");
-        new Chart(document.getElementById("top-imdb"), {
-          type: "line",
-          data: {
-            labels: top10IMDBData.map((x) => x.Title),
-            datasets: [
-              {
-                label: "Top 10 Movies by IMDB Rating",
-                data: top10IMDBData.map((x) => x.IMDB),
-                backgroundColor: "#3db042",
-              },
-            ],
-          },
+        const top10IMDBTable = document.getElementById("top-imdb");
+        let html = `
+        <tr>
+          <th>Title</th>
+          <th>IMDB</th>
+          <th>Year</th>
+          <th>Director</th>
+          <th>Gross</th>
+        </tr>
+        `;
+        top10IMDBData.forEach((row) => {
+          html += `
+          <tr>
+            <td>${row.Title}</td>
+            <td>${row.IMDB}</td>
+            <td>${row.Year}</td>
+            <td>${row.Director}</td>
+            <td>${new Intl.NumberFormat("en-AU", {
+              style: "currency",
+              currency: "AUD",
+            }).format(row.Gross)}</td>
+          </tr>`;
         });
+        top10IMDBTable.innerHTML = html;
+
+        // new Chart(document.getElementById("top-imdb"), {
+        //   type: "line",
+        //   data: {
+        //     labels: top10IMDBData.map((x) => x.Title),
+        //     datasets: [
+        //       {
+        //         label: "IMDB Rating",
+        //         data: top10IMDBData.map((x) => x.IMDB),
+        //         backgroundColor: "#3db042",
+        //       },
+        //     ],
+        //   },
+        //   options: {
+        //     plugins: {
+        //       title: {
+        //         display: true,
+        //         text: "Top 10 Movies By IMDB Rating",
+        //       },
+        //     },
+        //   },
+        // });
 
         const top10GrossData = await getTop10MovieData("Gross");
         new Chart(document.getElementById("top-gross"), {
@@ -188,53 +228,169 @@
             datasets: [
               {
                 type: "bar",
-                label: "Top 10 Movies by Gross",
+                yAxisID: "A",
+                label: "Gross",
                 data: top10GrossData.map((x) => x.Gross),
-                backgroundColor: "#ff6384",
+                // backgroundColor: "orange",
               },
-              // {
-              //   type: "line",
-              //   label: "IMDB",
-              //   data: top10GrossData.map((x) => x.IMDB),
-              //   backgroundColor: "#ff6384",
-              // },
+              {
+                type: "line",
+                yAxisID: "B",
+                label: "IMDB",
+                data: top10GrossData.map((x) => x.IMDB),
+                // backgroundColor: "#ff6384",
+              },
             ],
+          },
+          options: {
+            plugins: {
+              title: {
+                display: true,
+                text: "Top 10 Movies By Gross",
+              },
+            },
+
+            scales: {
+              A: {
+                type: "linear",
+                position: "left",
+              },
+              B: {
+                type: "linear",
+                position: "right",
+              },
+            },
           },
         });
 
-        const top10DirectorByGrossData = await getTop10DirectorByGross();
-        new Chart(document.getElementById("top-director-by-gross"), {
+        const top10GenresByGrossData = await getTop10GenresByGross();
+        new Chart(document.getElementById("top-genre-by-gross"), {
           data: {
-            labels: top10DirectorByGrossData.map(
-              (x) => `${x.Director}: ${x.count} movies`
-            ),
+            labels: top10GenresByGrossData.map((x) => `${x.Genre1}`),
             datasets: [
               {
                 type: "bar",
-                label: "Top 10 Directors by Total Gross",
-                data: top10DirectorByGrossData.map((x) => x.gross),
-                backgroundColor: "red",
+                yAxisID: "A",
+                label: "Average Gross",
+                data: top10GenresByGrossData.map((x) => x.avg_gross),
+                // backgroundColor: "#800080",
+              },
+              {
+                type: "line",
+                yAxisID: "B",
+                label: "Number of Movies",
+                data: top10GenresByGrossData.map((x) => x.count),
+                // backgroundColor: "#800080",
               },
             ],
+          },
+          options: {
+            plugins: {
+              title: {
+                display: true,
+                text: "Top 10 Genres By Average Gross",
+              },
+            },
+            scales: {
+              A: {
+                type: "linear",
+                position: "left",
+              },
+              B: {
+                type: "linear",
+                position: "right",
+              },
+              xAxes: [
+                {
+                  gridLines: {
+                    color: "rgba(0, 0, 0, 0)",
+                  },
+                },
+              ],
+              yAxes: [
+                {
+                  gridLines: {
+                    color: "rgba(0, 0, 0, 0)",
+                  },
+                },
+              ],
+            },
           },
         });
 
-        const top10DirectorByIMDBData = await getTop10DirectorByIMDB();
-        new Chart(document.getElementById("top-director-by-imdb"), {
-          data: {
-            labels: top10DirectorByIMDBData.map(
-              (x) => `${x.Director}: ${x.count} movies`
-            ),
-            datasets: [
-              {
-                type: "line",
-                label: "Top 10 Directors by Average IMDB Rating",
-                data: top10DirectorByIMDBData.map((x) => x.imdb),
-                backgroundColor: "#318CE7",
-              },
-            ],
-          },
+        // const top10DirectorByGrossData = await getTop10DirectorByGross();
+        // new Chart(document.getElementById("top-director-by-gross"), {
+        //   data: {
+        //     labels: top10DirectorByGrossData.map(
+        //       (x) => `${x.Director}: ${x.count} movies`
+        //     ),
+        //     datasets: [
+        //       {
+        //         type: "bar",
+        //         // yAxisID: "A",
+        //         label: "Total Gross",
+        //         data: top10DirectorByGrossData.map((x) => x.gross),
+        //         // backgroundColor: "red",
+        //       },
+        //       {
+        //         type: "line",
+        //         // yAxisID: "B",
+        //         label: "Average Gross",
+        //         data: top10DirectorByGrossData.map((x) => x.avg_gross),
+        //         // backgroundColor: "orange",
+        //       },
+        //     ],
+        //   },
+        //   options: {
+        //     plugins: {
+        //       title: {
+        //         display: true,
+        //         text: "Top 10 Directors By Gross",
+        //       },
+        //     },
+
+        // scales: {
+        //   A: {
+        //     type: "linear",
+        //     position: "left",
+        //   },
+        //   B: {
+        //     type: "linear",
+        //     position: "right",
+        //   },
+        // },
+        //   },
+        // });
+
+        const top10DirectorByGrossData = await getTop10DirectorByGross();
+        const top10DirectorByGrossTable = document.getElementById(
+          "top-director-by-gross"
+        );
+        let html2 = `
+        <tr>
+          <th>Director</th>
+          <th>Gross</th>
+          <th>Number of Movies</th>
+          <th>Average Gross</th>
+        </tr>
+        `;
+        top10DirectorByGrossData.forEach((row) => {
+          html2 += `
+          <tr>
+            <td>${row.Director}</td>
+            <td>${new Intl.NumberFormat("en-AU", {
+              style: "currency",
+              currency: "AUD",
+            }).format(row.gross)}</td>
+            <td>${row.count}</td>
+            <td>${new Intl.NumberFormat("en-AU", {
+              style: "currency",
+              currency: "AUD",
+            }).format(row.avg_gross)}</td>
+          </tr>`;
         });
+        console.log();
+        top10DirectorByGrossTable.innerHTML = html2;
 
         const allMovieData = await getAllMovieData();
         new Chart(document.getElementById("bubble-chart"), {
