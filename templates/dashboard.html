@@ -19,70 +19,109 @@
       <div class="mx-3 pb-5">
         <h1>Project 3: Movie Night</h1>
         <p>Presented by: ..., ..., ...</p>
-        <a href="/" class="btn btn-primary">Data</a>
-        <a href="/dashboard" class="btn btn-danger">Dashboard</a>
+        <a href="/" class="btn btn-danger shadow-sm">Data</a>
+        <a href="/dashboard" class="btn btn-primary shadow-sm">Dashboard</a>
         <hr />
         <h2 class="mb-3">Dashboard</h2>
         <div class="d-flex flex-column gap-5">
           <div class="row">
             <div class="col-3">
               <div
-                class="d-flex flex-column justify-content-center align-items-center rounded rounded-3 p-3 text-bg-primary statistic"
+                class="m-3 p-3 w-100 h-100 text-bg-primary bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm"
               >
-                <h4 class="text-center">Number of Movies</h4>
-                <div class="text-center">From 1920 to 2020</div>
-                <div class="fs-2 text-center">999</div>
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center statistic"
+                >
+                  <h4 class="text-center">Number of Movies</h4>
+                  <div class="text-center">From 1920 to 2020</div>
+                  <div class="fs-2 text-center">999</div>
+                </div>
               </div>
             </div>
             <div class="col-3">
               <div
-                class="d-flex flex-column justify-content-center align-items-center rounded rounded-3 p-3 text-bg-primary statistic"
+                class="m-3 p-3 w-100 h-100 text-bg-primary bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm"
               >
-                <h4 class="text-center">Total Gross</h4>
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center statistic"
+                >
+                  <h4 class="text-center">Total Gross</h4>
 
-                <div class="text-center">of 830 movies</div>
-                <div class="fs-2 text-center">$56,363,040,043</div>
+                  <div class="text-center">of 830 movies</div>
+                  <div class="fs-2 text-center">$56,363,040,043</div>
+                </div>
               </div>
             </div>
             <div class="col-3">
               <div
-                class="d-flex flex-column justify-content-center align-items-center rounded rounded-3 p-3 text-bg-primary statistic"
+                class="m-3 p-3 w-100 h-100 text-bg-primary bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm"
               >
-                <h4 class="text-center">Top 1 Movie</h4>
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center statistic"
+                >
+                  <h4 class="text-center">Top 1 Movie</h4>
 
-                <div class="text-center">by IMDB Rating</div>
-                <div class="fs-2 text-center">The Shawshank Redemption</div>
+                  <div class="text-center">by IMDB Rating</div>
+                  <div class="fs-2 text-center">The Shawshank Redemption</div>
+                </div>
               </div>
             </div>
             <div class="col-3">
               <div
-                class="d-flex flex-column justify-content-center align-items-center rounded rounded-3 p-3 text-bg-primary statistic"
+                class="m-3 p-3 w-100 h-100 text-bg-primary bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm"
               >
-                <h4 class="text-center">Top 1 Genre</h4>
-                <div class="text-center">with 289 movies</div>
-                <div class="fs-2 text-center">Drama</div>
+                <div
+                  class="d-flex flex-column justify-content-center align-items-center statistic"
+                >
+                  <h4 class="text-center">Top 1 Genre</h4>
+                  <div class="text-center">with 289 movies</div>
+                  <div class="fs-2 text-center">Drama</div>
+                </div>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-8"><canvas id="bubble-chart"></canvas></div>
-            <div class="col-4"><canvas id="top-genre"></canvas></div>
+            <div class="col-8">
+              <div class="m-2 border w-100 h-100 shadow-sm rounded-3 p-3">
+                <canvas id="bubble-chart"></canvas>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="m-2 border w-100 h-100 shadow-sm rounded-3 p-3">
+                <canvas id="top-genre"></canvas>
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col-5">
-              <h5 class="mb-4">Top 10 Movies by IMDB Rating</h5>
-              <table id="top-imdb" class="table table-sm table-striped"></table>
+              <div class="m-2 border w-100 h-100 shadow-sm rounded-3 p-3">
+                <h5 class="mb-4">Top 10 Movies by IMDB Rating</h5>
+                <table
+                  id="top-imdb"
+                  class="table table-sm table-striped"
+                ></table>
+              </div>
             </div>
-            <div class="col-7"><canvas id="top-gross"></canvas></div>
+            <div class="col-7">
+              <div class="m-2 border w-100 h-100 shadow-sm rounded-3 p-3">
+                <canvas id="top-gross"></canvas>
+              </div>
+            </div>
           </div>
           <div class="row">
-            <div class="col-6"><canvas id="top-genre-by-gross"></canvas></div>
             <div class="col-6">
-              <h5 class="mb-4">Top 10 Directors by Gross</h5>
-              <table
-                id="top-director-by-gross"
-                class="table table-sm table-striped"
-              ></table>
+              <div class="m-2 border w-100 h-100 shadow-sm rounded-3 p-3">
+                <canvas id="top-genre-by-gross"></canvas>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="m-2 border w-100 h-100 shadow-sm rounded-3 p-3">
+                <h5 class="mb-4">Top 10 Directors by Gross</h5>
+                <table
+                  id="top-director-by-gross"
+                  class="table table-sm table-striped"
+                ></table>
+              </div>
             </div>
           </div>
         </div>
@@ -199,28 +238,6 @@
         });
         top10IMDBTable.innerHTML = html;
 
-        // new Chart(document.getElementById("top-imdb"), {
-        //   type: "line",
-        //   data: {
-        //     labels: top10IMDBData.map((x) => x.Title),
-        //     datasets: [
-        //       {
-        //         label: "IMDB Rating",
-        //         data: top10IMDBData.map((x) => x.IMDB),
-        //         backgroundColor: "#3db042",
-        //       },
-        //     ],
-        //   },
-        //   options: {
-        //     plugins: {
-        //       title: {
-        //         display: true,
-        //         text: "Top 10 Movies By IMDB Rating",
-        //       },
-        //     },
-        //   },
-        // });
-
         const top10GrossData = await getTop10MovieData("Gross");
         new Chart(document.getElementById("top-gross"), {
           data: {
@@ -317,50 +334,6 @@
             },
           },
         });
-
-        // const top10DirectorByGrossData = await getTop10DirectorByGross();
-        // new Chart(document.getElementById("top-director-by-gross"), {
-        //   data: {
-        //     labels: top10DirectorByGrossData.map(
-        //       (x) => `${x.Director}: ${x.count} movies`
-        //     ),
-        //     datasets: [
-        //       {
-        //         type: "bar",
-        //         // yAxisID: "A",
-        //         label: "Total Gross",
-        //         data: top10DirectorByGrossData.map((x) => x.gross),
-        //         // backgroundColor: "red",
-        //       },
-        //       {
-        //         type: "line",
-        //         // yAxisID: "B",
-        //         label: "Average Gross",
-        //         data: top10DirectorByGrossData.map((x) => x.avg_gross),
-        //         // backgroundColor: "orange",
-        //       },
-        //     ],
-        //   },
-        //   options: {
-        //     plugins: {
-        //       title: {
-        //         display: true,
-        //         text: "Top 10 Directors By Gross",
-        //       },
-        //     },
-
-        // scales: {
-        //   A: {
-        //     type: "linear",
-        //     position: "left",
-        //   },
-        //   B: {
-        //     type: "linear",
-        //     position: "right",
-        //   },
-        // },
-        //   },
-        // });
 
         const top10DirectorByGrossData = await getTop10DirectorByGross();
         const top10DirectorByGrossTable = document.getElementById(
