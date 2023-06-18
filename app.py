@@ -1,19 +1,19 @@
 import csv
 import pandas as pd
 from sqlalchemy import create_engine
+from sqlalchemy.orm import Session 
 import sqlite3
 from flask import Flask, render_template, jsonify
-from sqlalchemy.orm import Session 
+
 
 
 data = pd.read_csv('imdb_top_1000_cleaned.csv')
 
-engine= create_engine('sqlite:///movies.db')
+engine =  create_engine('sqlite:///movies.db')
+data.to_sql('movies', engine, index=False,if_exists= 'replace')
+# SQLite database connection
 
-data.to_sql('movies',engine,index=False,if_exists= 'replace')
-
-session = Session(engine)
-
+# session = Session(engine)
 
 ################################################
 # Flask Setup
@@ -21,57 +21,68 @@ session = Session(engine)
 app = Flask(__name__)
 
 
-# SQLite database connection
-conn = sqlite3.connect('movies.db', check_same_thread=False)
-cursor = conn.cursor()
-
-
-
 # # Read the CSV file and insert data into the database
 # with open('imdb_top_1000.csv', 'r') as file:
 #     csv_data = csv.DictReader(file)
     
-
+# Data Page
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# Dashboard Page
 @app.route('/dashboard')
 def dashboad():
     return render_template('dashboard.html')
 
 @app.route('/api/movies/')
 def get_all_movies():
-    query = f'SELECT * FROM movies'
-    cursor.execute(query)
-    columns = [column[0] for column in cursor.description]
-    rows = cursor.fetchall()
-    result = [dict(zip(columns, row)) for row in rows]
-    return jsonify(result)
+    with sqlite3.connect('movies.db', check_same_thread=False) as conn:
+        cursor = conn.cursor()
+        query = f'SELECT * FROM movies'
+        cursor.execute(query)
+        columns = [column[0] for column in cursor.description]
+        rows = cursor.fetchall()
+        result = [dict(zip(columns, row)) for row in rows]
+        return jsonify(result)
 
 @app.route('/api/sorted_movies/<attribute>')
 def get_sorted_movies(attribute):
-    query = f'SELECT * FROM movies ORDER BY {attribute} DESC'
-    cursor.execute(query)
-    columns = [column[0] for column in cursor.description]
-    rows = cursor.fetchall()
-    result = [dict(zip(columns, row)) for row in rows]
-    return jsonify(result)
+    with sqlite3.connect('movies.db', check_same_thread=False) as conn:
+        cursor = conn.cursor()
+        if attribute == "~Randomized~":
+            print("Randiomized Option Selected")
+            # attribute = "RANDOM()"
+            query = "SELECT * FROM movies ORDER BY RANDOM() LIMIT 10"
+        else:
+            query = f'SELECT * FROM movies ORDER BY {attribute} DESC'
+
+    
+        cursor.execute(query)
+        columns = [column[0] for column in cursor.description]
+        rows = cursor.fetchall()
+        result = [dict(zip(columns, row)) for row in rows]
+        return jsonify(result)
+
+
 
 @app.route('/api/top_movies/<attribute>')
 def get_top_movies(attribute):
-    query = f'SELECT * FROM movies ORDER BY {attribute} DESC LIMIT 10'
-    cursor.execute(query)
-    columns = [column[0] for column in cursor.description]
-    rows = cursor.fetchall()
-    result = [dict(zip(columns, row)) for row in rows]
-    return jsonify(result)
+    with sqlite3.connect('movies.db', check_same_thread=False) as conn:
+        cursor = conn.cursor()
+        query = f'SELECT * FROM movies ORDER BY {attribute} DESC LIMIT 10'
+        cursor.execute(query)
+        columns = [column[0] for column in cursor.description]
+        rows = cursor.fetchall()
+        result = [dict(zip(columns, row)) for row in rows]
+        return jsonify(result)
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
 
 
-
+# -----------------------------------------------------------------------------------------------------
 
 
 #
