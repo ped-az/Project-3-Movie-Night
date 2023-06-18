@@ -49,6 +49,7 @@ def get_all_movies():
     result = [dict(zip(columns, row)) for row in rows]
     return jsonify(result)
 
+# Sorted movies by attribute for index page
 @app.route('/api/sorted_movies/<attribute>')
 def get_sorted_movies(attribute):
     query = f'SELECT * FROM movies ORDER BY {attribute} DESC'
@@ -58,6 +59,7 @@ def get_sorted_movies(attribute):
     result = [dict(zip(columns, row)) for row in rows]
     return jsonify(result)
 
+# Top 10 movies by attribute for dashboard
 @app.route('/api/top_movies/<attribute>')
 def get_top_movies(attribute):
     query = f'SELECT * FROM movies ORDER BY {attribute} DESC LIMIT 10'

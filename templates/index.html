@@ -70,6 +70,7 @@
       sortFields.forEach((header, index) => {
         sortByHTML += `<option value=${index}>${header}</option>`;
       });
+
       sortBy.innerHTML = sortByHTML;
       sortBy.addEventListener("change", (e) => {
         const optionIndex = e.target.value;
@@ -77,6 +78,7 @@
         console.log(selectedField);
         getData(selectedField);
       });
+
       getData(sortFields[0]);
 
       async function getData(selectedHeader) {
@@ -110,34 +112,6 @@
         tableBody.innerHTML = tableHTML;
         return movie_data;
       }
-
-      getData();
-
-      // movie_data.forEach((movie) => {
-      //   tableBodyHTML += `<`;
-      // });
-
-      // Insert data into table
-
-      // $(document).ready(function () {
-      //   $.getJSON("/api/movies", function (data) {
-      //     var moviesTable = $("#movies-table tbody");
-      //     $.each(data, function (index, movie) {
-      //       var row = $("<tr>");
-      //       row.append($("<td>").text(movie.Series_Title));
-      //       row.append($("<td>").text(movie.Released_Year));
-      //       row.append($("<td>").text(movie.Certificate));
-      //       row.append($("<td>").text(movie.Director));
-      //       row.append($("<td>").text(movie.Genre_1));
-      //       row.append($("<td>").text(movie.Genre_2));
-      //       row.append($("<td>").text(movie.Genre_3));
-      //       row.append($("<td>").text(movie.No_of_Genres));
-      //       row.append($("<td>").text(movie.Runtime));
-      //       row.append($("<td>").text(movie.Gross));
-      //       moviesTable.append(row);
-      //     });
-      //   });
-      // });
     </script>
   </body>
 </html>
