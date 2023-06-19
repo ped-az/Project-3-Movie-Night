@@ -34,6 +34,7 @@ const sortFields = [
   "Votes",
   "Gross",
   "Year",
+  "Genre",
   "~Randomized~",
 ];
 

@@ -25,9 +25,15 @@
         <h2>Data Overview</h2>
         <p>Note: Not all data columns are displayed</p>
 
-        <div class="input-group mb-3">
-          <span class="input-group-text">SORT BY</span>
-          <select class="form-select" id="sort-by"></select>
+        <div class="d-flex gap-3">
+          <div class="input-group mb-3">
+            <span class="input-group-text text-bg-secondary">SORT BY</span>
+            <select class="form-select" id="sort-by"></select>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text text-bg-secondary">FILTER</span>
+            <select class="form-select" id="filter"></select>
+          </div>
         </div>
         <table
           id="movie-table"

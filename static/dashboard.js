@@ -1,17 +1,3 @@
-const tableHeaders = [
-  "Title",
-  "Year",
-  "Certificate",
-  "Director",
-  "Genre1",
-  "Runtime",
-  "MetaScore",
-  "IMDB",
-  "Votes",
-  "Gross",
-];
-const sortFields = ["IMDB", "Runtime", "MetaScore", "Votes", "Gross", "Year"];
-
 async function getAllMovieData() {
   const url = `/api/movies/`;
   console.log(url);
@@ -74,7 +60,7 @@ async function getTop10GenresByGross() {
       plugins: {
         title: {
           display: true,
-          text: "Genres Distribution",
+          text: "Genres",
         },
       },
     },
@@ -182,20 +168,6 @@ async function getTop10GenresByGross() {
           type: "linear",
           position: "right",
         },
-        xAxes: [
-          {
-            gridLines: {
-              color: "rgba(0, 0, 0, 0)",
-            },
-          },
-        ],
-        yAxes: [
-          {
-            gridLines: {
-              color: "rgba(0, 0, 0, 0)",
-            },
-          },
-        ],
       },
     },
   });
