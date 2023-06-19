@@ -52,7 +52,13 @@ def get_all_movies():
 # Sorted movies by attribute for index page
 @app.route('/api/sorted_movies/<attribute>')
 def get_sorted_movies(attribute):
-    query = f'SELECT * FROM movies ORDER BY {attribute} DESC'
+    if attribute == "~Randomized~":
+        print("Randiomized Option Selected")
+        # attribute = "RANDOM()"
+        query = "SELECT * FROM movies ORDER BY RANDOM() LIMIT 10"
+    else:
+        query = f'SELECT * FROM movies ORDER BY {attribute} DESC'
+
     cursor.execute(query)
     columns = [column[0] for column in cursor.description]
     rows = cursor.fetchall()
