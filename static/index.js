@@ -1,5 +1,5 @@
 // Fetch data from api
-const tableHeaders = [
+const dataFields = [
   "Poster",
   "Title",
   "Year",
@@ -13,6 +13,20 @@ const tableHeaders = [
   "Gross",
 ];
 
+const tableHeaders = [
+  "Poster",
+  "Title",
+  "Released Year",
+  "Certificate",
+  "Director",
+  "Genre",
+  "Runtime",
+  "Meta Score",
+  "IMDB Rating",
+  "# of Votes",
+  "Gross",
+];
+
 const sortFields = [
   "IMDB",
   "Runtime",
@@ -22,6 +36,7 @@ const sortFields = [
   "Year",
   "~Randomized~",
 ];
+
 const sortBy = document.getElementById("sort-by");
 let sortByHTML = "";
 sortFields.forEach((header, index) => {
@@ -56,19 +71,17 @@ async function getData(selectedHeader) {
 
   movie_data.forEach((movie) => {
     tableHTML += "<tr>";
-    tableHeaders.forEach((header) => {
-      if (header === "Poster") {
-        tableHTML += `<td><img src="${movie[header]}"></td>`;
-      } else if (header === "Gross") {
+    dataFields.forEach((field) => {
+      if (field === "Poster") {
+        tableHTML += `<td><img src="${movie[field]}"></td>`;
+      } else if (field === "Gross") {
         tableHTML += `<td>$${new Intl.NumberFormat().format(
-          movie[header]
+          movie[field]
         )}</td>`;
-      } else if (header === "Votes") {
-        tableHTML += `<td>${new Intl.NumberFormat().format(
-          movie[header]
-        )}</td>`;
+      } else if (field === "Votes") {
+        tableHTML += `<td>${new Intl.NumberFormat().format(movie[field])}</td>`;
       } else {
-        tableHTML += `<td>${movie[header]}</td>`;
+        tableHTML += `<td>${movie[field]}</td>`;
       }
     });
     tableHTML += "</tr>";
