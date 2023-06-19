@@ -5,7 +5,7 @@ const tableHeaders = [
   "Year",
   "Certificate",
   "Director",
-  "Genre1",
+  "Genre",
   "Runtime",
   "MetaScore",
   "IMDB",
@@ -59,6 +59,14 @@ async function getData(selectedHeader) {
     tableHeaders.forEach((header) => {
       if (header === "Poster") {
         tableHTML += `<td><img src="${movie[header]}"></td>`;
+      } else if (header === "Gross") {
+        tableHTML += `<td>$${new Intl.NumberFormat().format(
+          movie[header]
+        )}</td>`;
+      } else if (header === "Votes") {
+        tableHTML += `<td>${new Intl.NumberFormat().format(
+          movie[header]
+        )}</td>`;
       } else {
         tableHTML += `<td>${movie[header]}</td>`;
       }

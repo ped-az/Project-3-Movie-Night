@@ -70,6 +70,14 @@ async function getTop10GenresByGross() {
         },
       ],
     },
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: "Genres Distribution",
+        },
+      },
+    },
   });
 
   const top10IMDBData = await getTop10MovieData("IMDB");
@@ -90,10 +98,7 @@ async function getTop10GenresByGross() {
             <td>${row.IMDB}</td>
             <td>${row.Year}</td>
             <td>${row.Director}</td>
-            <td>${new Intl.NumberFormat("en-AU", {
-              style: "currency",
-              currency: "AUD",
-            }).format(row.Gross)}</td>
+            <td>$${new Intl.NumberFormat().format(row.Gross)}</td>
           </tr>`;
   });
   top10IMDBTable.innerHTML = html;
@@ -106,7 +111,7 @@ async function getTop10GenresByGross() {
         {
           type: "bar",
           yAxisID: "A",
-          label: "Gross",
+          label: "Gross ($)",
           data: top10GrossData.map((x) => x.Gross),
           // backgroundColor: "orange",
         },
@@ -148,7 +153,7 @@ async function getTop10GenresByGross() {
         {
           type: "bar",
           yAxisID: "A",
-          label: "Average Gross",
+          label: "Average Gross ($)",
           data: top10GenresByGrossData.map((x) => x.avg_gross),
           // backgroundColor: "#800080",
         },
@@ -211,15 +216,9 @@ async function getTop10GenresByGross() {
     html2 += `
           <tr>
             <td>${row.Director}</td>
-            <td>${new Intl.NumberFormat("en-AU", {
-              style: "currency",
-              currency: "AUD",
-            }).format(row.gross)}</td>
+            <td>$${new Intl.NumberFormat().format(row.gross)}</td>
             <td>${row.count}</td>
-            <td>${new Intl.NumberFormat("en-AU", {
-              style: "currency",
-              currency: "AUD",
-            }).format(row.avg_gross)}</td>
+            <td>$${new Intl.NumberFormat().format(row.avg_gross)}</td>
           </tr>`;
   });
   console.log();
@@ -230,15 +229,11 @@ async function getTop10GenresByGross() {
     type: "bubble",
     data: {
       labels: allMovieData.map(
-        (x) =>
-          `${x.Title}: ${new Intl.NumberFormat("en-AU", {
-            style: "currency",
-            currency: "AUD",
-          }).format(x.Gross)}`
+        (x) => `${x.Title}: $${new Intl.NumberFormat().format(x.Gross)}`
       ),
       datasets: [
         {
-          label: "Gross",
+          label: "IMDB, Released Year and Gross",
           data: allMovieData.map((row) => ({
             x: row.Year,
             y: row.IMDB,
@@ -247,6 +242,14 @@ async function getTop10GenresByGross() {
           hoverBackgroundColor: "red",
         },
       ],
+    },
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: "Top 1000 IMDb",
+        },
+      },
     },
   });
 })();

@@ -55,7 +55,7 @@ def get_sorted_movies(attribute):
     if attribute == "~Randomized~":
         print("Randiomized Option Selected")
         # attribute = "RANDOM()"
-        query = "SELECT * FROM movies ORDER BY RANDOM() LIMIT 10"
+        query = "SELECT * FROM movies ORDER BY RANDOM() DESC LIMIT 10"
     else:
         query = f'SELECT * FROM movies ORDER BY {attribute} DESC'
 
