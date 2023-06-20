@@ -24,16 +24,37 @@ th {
   text-align: left;
 }
 
+img {
+  max-width: 100%;
+}
+
+.text-fs-11 {
+  font-size: 11px;
+}
+
+.text-fs-13 {
+  font-size: 13px;
+}
+
+.text-fs-15 {
+  font-size: 15px;
+}
+
 .statistic {
   transition: all 0.8s;
-  background-color: #0096ff;
-  opacity: 80%;
-  color: white;
+  opacity: 90%;
 }
 
 .statistic:hover {
   transform: translateY(-5px) scale(1.03);
-  background-color: #c70039;
+  background-color: #c70039 !important;
   opacity: 100%;
-  color: white;
+}
+
+.banner {
+  background-image: url("banner2.jpg");
+  height: 300px;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
 }

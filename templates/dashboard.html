@@ -13,21 +13,48 @@
       integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
   </head>
   <body>
     <div class="fluid-container bg-light">
-      <div class="mx-3 pb-5">
+      <div
+        class="banner d-flex flex-column justify-content-center text-white px-3 mb-3"
+      >
+        <!-- <img src="../static/banner2.jpg" alt="" /> -->
         <h1>Project 3: Movie Night</h1>
-        <p>Presented by: ..., ..., ...</p>
-        <a href="/" class="btn btn-danger shadow-sm">Data</a>
-        <a href="/dashboard" class="btn btn-primary shadow-sm">Dashboard</a>
-        <hr />
+        <p>
+          Presented by
+          <span class="text-bg-secondary text-fs-13 rounded-3 px-2 py-1"
+            ><i class="fa fa-user me-1" aria-hidden="true"></i> Andrew</span
+          >
+          <span class="text-bg-secondary text-fs-13 rounded-3 px-2 py-1"
+            ><i class="fa fa-user me-1" aria-hidden="true"></i> Enessa</span
+          >
+          <span class="text-bg-secondary text-fs-13 rounded-3 px-2 py-1"
+            ><i class="fa fa-user me-1" aria-hidden="true"></i> Minh</span
+          >
+          <span class="text-bg-secondary text-fs-13 rounded-3 px-2 py-1"
+            ><i class="fa fa-user me-1" aria-hidden="true"></i> Pedro</span
+          >
+          <span class="text-bg-secondary text-fs-13 rounded-3 px-2 py-1"
+            ><i class="fa fa-user me-1" aria-hidden="true"></i> Rachel</span
+          >
+        </p>
+        <div class="d-flex gap-2">
+          <a href="/" class="btn btn-danger shadow-sm">Data</a>
+          <a href="/dashboard" class="btn btn-primary shadow-sm">Dashboard</a>
+        </div>
+      </div>
+      <div class="mx-3 pb-5">
         <h2 class="mb-3">Dashboard</h2>
         <div class="d-flex flex-column gap-5">
           <div class="row">
             <div class="col">
               <div
-                class="p-3 w-100 h-100 bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm statistic"
+                class="p-3 w-100 h-100 text-bg-primary bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm statistic"
               >
                 <div
                   class="d-flex flex-column justify-content-center align-items-center"
@@ -40,7 +67,7 @@
             </div>
             <div class="col">
               <div
-                class="p-3 w-100 h-100 bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm statistic"
+                class="p-3 w-100 h-100 text-bg-primary bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm statistic"
               >
                 <div
                   class="d-flex flex-column justify-content-center align-items-center"
@@ -54,7 +81,7 @@
             </div>
             <div class="col">
               <div
-                class="p-3 w-100 h-100 bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm statistic"
+                class="p-3 w-100 h-100 text-bg-primary bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm statistic"
               >
                 <div
                   class="d-flex flex-column justify-content-center align-items-center"
@@ -68,7 +95,7 @@
             </div>
             <div class="col">
               <div
-                class="p-3 w-100 h-100 bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm statistic"
+                class="p-3 w-100 h-100 text-bg-primary bg-gradient rounded-3 d-flex flex-column align-items-center justify-content-center shadow-sm statistic"
               >
                 <div
                   class="d-flex flex-column justify-content-center align-items-center"
@@ -98,7 +125,7 @@
                 <h5 class="mb-4 text-center">Top 10 Movies by IMDB Rating</h5>
                 <table
                   id="top-imdb"
-                  class="table table-sm table-striped"
+                  class="table table-sm table-striped text-fs-13"
                 ></table>
               </div>
             </div>
@@ -119,7 +146,7 @@
                 <h5 class="mb-4 text-center">Top 10 Directors by Gross</h5>
                 <table
                   id="top-director-by-gross"
-                  class="table table-sm table-striped"
+                  class="table table-sm table-striped text-fs-13"
                 ></table>
               </div>
             </div>

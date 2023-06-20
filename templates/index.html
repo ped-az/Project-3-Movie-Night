@@ -13,15 +13,43 @@
       integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
   </head>
   <body>
     <div class="fluid-container">
-      <div class="mx-3">
+      <div
+        class="banner d-flex flex-column justify-content-center text-white px-3 mb-3"
+      >
+        <!-- <img src="../static/banner2.jpg" alt="" /> -->
         <h1>Project 3: Movie Night</h1>
-        <p>Presented by: ..., ..., ...</p>
-        <a href="/" class="btn btn-danger shadow-sm">Data</a>
-        <a href="/dashboard" class="btn btn-primary shadow-sm">Dashboard</a>
-        <hr />
+        <p>
+          Presented by
+          <span class="text-bg-secondary text-fs-13 rounded-3 px-2 py-1"
+            ><i class="fa fa-user me-1" aria-hidden="true"></i> Andrew</span
+          >
+          <span class="text-bg-secondary text-fs-13 rounded-3 px-2 py-1"
+            ><i class="fa fa-user me-1" aria-hidden="true"></i> Enessa</span
+          >
+          <span class="text-bg-secondary text-fs-13 rounded-3 px-2 py-1"
+            ><i class="fa fa-user me-1" aria-hidden="true"></i> Minh</span
+          >
+          <span class="text-bg-secondary text-fs-13 rounded-3 px-2 py-1"
+            ><i class="fa fa-user me-1" aria-hidden="true"></i> Pedro</span
+          >
+          <span class="text-bg-secondary text-fs-13 rounded-3 px-2 py-1"
+            ><i class="fa fa-user me-1" aria-hidden="true"></i> Rachel</span
+          >
+        </p>
+        <div class="d-flex gap-2">
+          <a href="/" class="btn btn-danger shadow-sm">Data</a>
+          <a href="/dashboard" class="btn btn-primary shadow-sm">Dashboard</a>
+        </div>
+      </div>
+
+      <div class="mx-3">
         <h2>Data Overview</h2>
         <p>Note: Not all data columns are displayed</p>
 
