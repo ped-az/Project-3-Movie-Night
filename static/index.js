@@ -77,10 +77,15 @@ async function getDataWithSort(selectedHeader) {
   const movie_data = await response.json();
   console.log(movie_data);
 
-  const filterValues = [
-    "Select a filter value",
-    ...new Set(movie_data.map((movie) => movie[selectedHeader])),
+  let filterValues = [
+    ...new Set(
+      movie_data.map((movie) => {
+        return movie[selectedHeader];
+      })
+    ),
   ];
+
+  filterValues = ["Select a filter value", ...filterValues.reverse()];
 
   const filterElement = document.getElementById("filter");
   let filterHTML = "";

@@ -69,7 +69,11 @@ def get_filtered_movies():
     sortByValue  = request.args.get('sortByValue', None)
     filterValue  = request.args.get('filterValue', None)
     if (type(filterValue) == str):
-        query = f'SELECT * FROM movies WHERE {sortByValue} = "{filterValue}" ORDER BY IMDB DESC'
+        if filterValue=='null':
+            query = f'SELECT * FROM movies WHERE {sortByValue} IS NULL ORDER BY IMDB DESC'
+
+        else:
+            query = f'SELECT * FROM movies WHERE {sortByValue} = "{filterValue}" ORDER BY IMDB DESC'
     else:
         query = f'SELECT * FROM movies WHERE {sortByValue} = {filterValue} ORDER BY {sortByValue} DESC'
 
