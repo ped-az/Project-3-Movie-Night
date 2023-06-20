@@ -44,6 +44,82 @@ async function getTop10GenresByGross() {
 }
 
 (async function () {
+  // Bubble chart showing top 100 IMDB
+  const allMovieData = await getAllMovieData();
+  new Chart(document.getElementById("bubble-chart"), {
+    type: "bubble",
+    data: {
+      labels: allMovieData.map(
+        (x) => `${x.Title}: $${new Intl.NumberFormat().format(x.Gross)}`
+      ),
+      datasets: [
+        {
+          label: "Gross",
+          data: allMovieData.map((row) => ({
+            x: row.Year,
+            y: row.IMDB,
+            r: row.Gross / 25000000,
+          })),
+          hoverBackgroundColor: "#c70039",
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: "Top 1000 IMDB",
+          font: {
+            size: 20,
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              let label = "";
+              label += "Year (";
+              label += context.parsed.x;
+              label += "), IMDB (";
+              label += context.parsed.y;
+              label += ")";
+              return label;
+            },
+          },
+        },
+      },
+      scales: {
+        y: {
+          title: {
+            display: true,
+            text: "IMDB",
+            font: {
+              size: 16,
+            },
+            padding: {
+              bottom: 16,
+            },
+          },
+        },
+        x: {
+          title: {
+            display: true,
+            text: "Released Year",
+            font: {
+              size: 16,
+            },
+            padding: {
+              top: 16,
+            },
+          },
+          ticks: {
+            callback: (label) => `${label}`, // Convert year to string
+          },
+        },
+      },
+    },
+  });
+
+  // Doughnut chart showing proportions of genres
   const genreData = await getGenreData();
   new Chart(document.getElementById("top-genre"), {
     type: "doughnut",
@@ -51,7 +127,7 @@ async function getTop10GenresByGross() {
       labels: genreData.map((x) => x.Genre1),
       datasets: [
         {
-          label: "Percentage",
+          label: "%",
           data: genreData.map((x) => (x.count / 999) * 100),
         },
       ],
@@ -60,12 +136,16 @@ async function getTop10GenresByGross() {
       plugins: {
         title: {
           display: true,
-          text: "Genres",
+          text: "Proportions of Genres",
+          font: {
+            size: 20,
+          },
         },
       },
     },
   });
 
+  // Table showing top 10 movies by IMDB
   const top10IMDBData = await getTop10MovieData("IMDB");
   const top10IMDBTable = document.getElementById("top-imdb");
   let html = `
@@ -89,6 +169,7 @@ async function getTop10GenresByGross() {
   });
   top10IMDBTable.innerHTML = html;
 
+  // Mixed charts showing top 10 movies by gross along with their IMDB scores
   const top10GrossData = await getTop10MovieData("Gross");
   new Chart(document.getElementById("top-gross"), {
     data: {
@@ -97,7 +178,7 @@ async function getTop10GenresByGross() {
         {
           type: "bar",
           yAxisID: "A",
-          label: "Gross ($)",
+          label: "Gross",
           data: top10GrossData.map((x) => x.Gross),
           // backgroundColor: "orange",
         },
@@ -115,22 +196,61 @@ async function getTop10GenresByGross() {
         title: {
           display: true,
           text: "Top 10 Movies By Gross",
+          font: {
+            size: 20,
+          },
         },
       },
 
       scales: {
+        x: {
+          title: {
+            display: false,
+            text: "Movie",
+            font: {
+              size: 16,
+            },
+            padding: {
+              top: 16,
+            },
+          },
+        },
         A: {
           type: "linear",
           position: "left",
+          title: {
+            display: true,
+            text: "Gross",
+            font: {
+              size: 16,
+            },
+            padding: {
+              bottom: 16,
+            },
+          },
+          ticks: {
+            callback: (label) => `$${new Intl.NumberFormat().format(label)}`, // Convert year to string
+          },
         },
         B: {
           type: "linear",
           position: "right",
+          title: {
+            display: true,
+            text: "IMDB",
+            font: {
+              size: 16,
+            },
+            padding: {
+              bottom: 16,
+            },
+          },
         },
       },
     },
   });
 
+  // Mixed charts showing top 10 genres by gross along with their numbers of movies
   const top10GenresByGrossData = await getTop10GenresByGross();
   new Chart(document.getElementById("top-genre-by-gross"), {
     data: {
@@ -139,7 +259,7 @@ async function getTop10GenresByGross() {
         {
           type: "bar",
           yAxisID: "A",
-          label: "Average Gross ($)",
+          label: "Average Gross",
           data: top10GenresByGrossData.map((x) => x.avg_gross),
           // backgroundColor: "#800080",
         },
@@ -157,21 +277,61 @@ async function getTop10GenresByGross() {
         title: {
           display: true,
           text: "Top 10 Genres By Average Gross",
+          font: {
+            size: 20,
+          },
         },
       },
       scales: {
+        x: {
+          title: {
+            display: false,
+            text: "Genre",
+            font: {
+              size: 16,
+            },
+            padding: {
+              top: 16,
+            },
+          },
+        },
+
         A: {
           type: "linear",
           position: "left",
+          title: {
+            display: true,
+            text: "Average Gross",
+            font: {
+              size: 16,
+            },
+            padding: {
+              bottom: 16,
+            },
+          },
+          ticks: {
+            callback: (label) => `$${new Intl.NumberFormat().format(label)}`, // Convert year to string
+          },
         },
         B: {
           type: "linear",
           position: "right",
+          title: {
+            display: true,
+            text: "Numbers of Movies",
+            font: {
+              size: 16,
+            },
+            padding: {
+              bottom: 16,
+            },
+          },
         },
       },
     },
   });
 
+  // Table showing top 10 directors by gross
   const top10DirectorByGrossData = await getTop10DirectorByGross();
   const top10DirectorByGrossTable = document.getElementById(
     "top-director-by-gross"
@@ -190,38 +350,11 @@ async function getTop10GenresByGross() {
             <td>${row.Director}</td>
             <td>$${new Intl.NumberFormat().format(row.gross)}</td>
             <td>${row.count}</td>
-            <td>$${new Intl.NumberFormat().format(row.avg_gross)}</td>
+            <td>$${new Intl.NumberFormat().format(
+              Math.round(row.avg_gross)
+            )}</td>
           </tr>`;
   });
   console.log();
   top10DirectorByGrossTable.innerHTML = html2;
-
-  const allMovieData = await getAllMovieData();
-  new Chart(document.getElementById("bubble-chart"), {
-    type: "bubble",
-    data: {
-      labels: allMovieData.map(
-        (x) => `${x.Title}: $${new Intl.NumberFormat().format(x.Gross)}`
-      ),
-      datasets: [
-        {
-          label: "IMDB, Released Year and Gross",
-          data: allMovieData.map((row) => ({
-            x: row.Year,
-            y: row.IMDB,
-            r: row.Gross / 25000000,
-          })),
-          hoverBackgroundColor: "red",
-        },
-      ],
-    },
-    options: {
-      plugins: {
-        title: {
-          display: true,
-          text: "Top 1000 IMDb",
-        },
-      },
-    },
-  });
 })();
