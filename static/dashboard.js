@@ -129,10 +129,17 @@ async function getTop10GenresByGross() {
         {
           label: "%",
           data: genreData.map((x) => (x.count / 999) * 100),
+          borderWidth: 0,
+          hoverBorderWidth: 6,
+          hoverBackgroundColor: "#c70039",
+          // hoverBorderDash: 10,
         },
       ],
     },
     options: {
+      responsive: true,
+      cutoutPercentage: 50,
+
       plugins: {
         title: {
           display: true,
