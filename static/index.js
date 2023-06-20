@@ -34,28 +34,92 @@ const sortFields = [
   "Votes",
   "Gross",
   "Year",
-  "Genre",
+  "Certificate",
+  "Genre1",
   "~Randomized~",
 ];
 
-const sortBy = document.getElementById("sort-by");
+const sortByElement = document.getElementById("sort-by");
 let sortByHTML = "";
 sortFields.forEach((header, index) => {
   sortByHTML += `<option value=${index}>${header}</option>`;
 });
 
-sortBy.innerHTML = sortByHTML;
-sortBy.addEventListener("change", (e) => {
+sortByElement.innerHTML = sortByHTML;
+sortByElement.addEventListener("change", (e) => {
   const optionIndex = e.target.value;
   const selectedField = sortFields[optionIndex];
   console.log(selectedField);
-  getData(selectedField);
+  getDataWithSort(selectedField);
 });
 
-getData(sortFields[0]);
+const filterElement = document.getElementById("filter");
+filterElement.addEventListener("change", (e) => {
+  const sortByElement = document.getElementById("sort-by");
+  const optionIndex = sortByElement.value;
+  const sortByValue = sortFields[optionIndex];
 
-async function getData(selectedHeader) {
+  const filterValue = e.target.value;
+  console.log(filterValue);
+  getDataWithFilterValue(sortByValue, filterValue);
+});
+
+getDataWithSort(sortFields[0]);
+
+async function getDataWithSort(selectedHeader) {
   const url = `/api/sorted_movies/${selectedHeader}`;
+  console.log(url);
+  const response = await fetch(url);
+  const movie_data = await response.json();
+  console.log(movie_data);
+
+  const filterValues = [
+    "Select a filter value",
+    ...new Set(movie_data.map((movie) => movie[selectedHeader])),
+  ];
+
+  const filterElement = document.getElementById("filter");
+  let filterHTML = "";
+
+  if (selectedHeader !== "~Randomized~") {
+    filterValues.forEach((value) => {
+      filterHTML += `<option value=${value}>${value}</option>`;
+    });
+  }
+  filterElement.innerHTML = filterHTML;
+
+  const tableBody = document.getElementById("movie-table");
+
+  let tableHTML = "<tr>";
+
+  tableHeaders.forEach((header) => {
+    tableHTML += `<th>${header}</th>`;
+  });
+  tableHTML += "</tr>";
+
+  movie_data.forEach((movie) => {
+    tableHTML += "<tr>";
+    dataFields.forEach((field) => {
+      if (field === "Poster") {
+        tableHTML += `<td><img src="${movie[field]}"></td>`;
+      } else if (field === "Gross") {
+        tableHTML += `<td>$${new Intl.NumberFormat().format(
+          movie[field]
+        )}</td>`;
+      } else if (field === "Votes") {
+        tableHTML += `<td>${new Intl.NumberFormat().format(movie[field])}</td>`;
+      } else {
+        tableHTML += `<td>${movie[field]}</td>`;
+      }
+    });
+    tableHTML += "</tr>";
+  });
+
+  tableBody.innerHTML = tableHTML;
+}
+
+async function getDataWithFilterValue(sortByValue, filterValue) {
+  const url = `/api/filtered_movies?sortByValue=${sortByValue}&filterValue=${filterValue}`;
   console.log(url);
   const response = await fetch(url);
   const movie_data = await response.json();
@@ -89,5 +153,4 @@ async function getData(selectedHeader) {
   });
 
   tableBody.innerHTML = tableHTML;
-  return movie_data;
 }

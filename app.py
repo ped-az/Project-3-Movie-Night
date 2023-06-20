@@ -2,7 +2,7 @@ import csv
 import pandas as pd
 from sqlalchemy import create_engine
 import sqlite3
-from flask import Flask, render_template, jsonify
+from flask import Flask, request, render_template, jsonify
 from sqlalchemy.orm import Session 
 
 
@@ -56,6 +56,23 @@ def get_sorted_movies(attribute):
         query = "SELECT * FROM movies ORDER BY RANDOM() DESC LIMIT 10"
     else:
         query = f'SELECT * FROM movies ORDER BY {attribute} DESC'
+
+    cursor.execute(query)
+    columns = [column[0] for column in cursor.description]
+    rows = cursor.fetchall()
+    result = [dict(zip(columns, row)) for row in rows]
+    return jsonify(result)
+
+# Sorted movies by attribute for index page
+@app.route('/api/filtered_movies')
+def get_filtered_movies():
+    sortByValue  = request.args.get('sortByValue', None)
+    filterValue  = request.args.get('filterValue', None)
+    if (type(filterValue) == str):
+        query = f'SELECT * FROM movies WHERE {sortByValue} = "{filterValue}" ORDER BY IMDB DESC'
+    else:
+        query = f'SELECT * FROM movies WHERE {sortByValue} = {filterValue} ORDER BY {sortByValue} DESC'
+
 
     cursor.execute(query)
     columns = [column[0] for column in cursor.description]
