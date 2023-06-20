@@ -61,7 +61,11 @@ filterElement.addEventListener("change", (e) => {
 
   const filterValue = e.target.value;
   console.log(filterValue);
-  getDataWithFilterValue(sortByValue, filterValue);
+  if (filterValue === "Select") {
+    getDataWithSort(sortByValue);
+  } else {
+    getDataWithFilterValue(sortByValue, filterValue);
+  }
 });
 
 getDataWithSort(sortFields[0]);
