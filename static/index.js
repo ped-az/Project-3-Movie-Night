@@ -42,7 +42,11 @@ const sortFields = [
 const sortByElement = document.getElementById("sort-by");
 let sortByHTML = "";
 sortFields.forEach((header, index) => {
-  sortByHTML += `<option value=${index}>${header}</option>`;
+  if (header === "Genre1") {
+    sortByHTML += `<option value=${index}>Genre</option>`;
+  } else {
+    sortByHTML += `<option value=${index}>${header}</option>`;
+  }
 });
 
 sortByElement.innerHTML = sortByHTML;
@@ -85,7 +89,11 @@ async function getDataWithSort(selectedHeader) {
     ),
   ];
 
-  filterValues = ["Select a filter value", ...filterValues.reverse()];
+  if (selectedHeader === "Certificate" || selectedHeader === "Genre") {
+    filterValues = ["Select a filter value", ...filterValues];
+  } else {
+    filterValues = ["Select a filter value", ...filterValues.reverse()];
+  }
 
   const filterElement = document.getElementById("filter");
   let filterHTML = "";
