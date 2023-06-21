@@ -63,7 +63,9 @@ filterElement.addEventListener("change", (e) => {
   const optionIndex = sortByElement.value;
   const sortByValue = sortFields[optionIndex];
 
-  const filterValue = e.target.value;
+  const filterElement = e.target;
+  const filterValue = filterElement.options[filterElement.selectedIndex].text;
+
   console.log(filterValue);
   if (filterValue === "Select") {
     getDataWithSort(sortByValue);
@@ -89,11 +91,7 @@ async function getDataWithSort(selectedHeader) {
     ),
   ];
 
-  if (selectedHeader === "Certificate" || selectedHeader === "Genre1") {
-    filterValues = ["Select a filter value", ...filterValues];
-  } else {
-    filterValues = ["Select a filter value", ...filterValues.reverse()];
-  }
+  filterValues = ["Select a filter value", ...filterValues];
 
   const filterElement = document.getElementById("filter");
   let filterHTML = "";
@@ -136,7 +134,14 @@ async function getDataWithSort(selectedHeader) {
 }
 
 async function getDataWithFilterValue(sortByValue, filterValue) {
-  const url = `/api/filtered_movies?sortByValue=${sortByValue}&filterValue=${filterValue}`;
+  let filterValue2;
+  if (filterValue === "MA 15+") {
+    filterValue2 = "MA15";
+  } else {
+    filterValue2 = filterValue;
+  }
+  let url = `/api/filtered_movies?sortByValue=${sortByValue}&filterValue=${filterValue2}`;
+
   console.log(url);
   const response = await fetch(url);
   const movie_data = await response.json();

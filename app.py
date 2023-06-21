@@ -70,7 +70,8 @@ def get_filtered_movies():
     if (type(filterValue) == str):
         if filterValue=='null':
             query = f'SELECT * FROM movies WHERE {sortByValue} IS NULL ORDER BY IMDB DESC'
-
+        elif  filterValue=='MA15':
+            query = f'SELECT * FROM movies WHERE {sortByValue} = "MA 15+" ORDER BY IMDB DESC'
         else:
             query = f'SELECT * FROM movies WHERE {sortByValue} = "{filterValue}" ORDER BY IMDB DESC'
     else:
