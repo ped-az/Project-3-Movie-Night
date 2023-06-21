@@ -89,7 +89,7 @@ async function getDataWithSort(selectedHeader) {
     ),
   ];
 
-  if (selectedHeader === "Certificate" || selectedHeader === "Genre") {
+  if (selectedHeader === "Certificate" || selectedHeader === "Genre1") {
     filterValues = ["Select a filter value", ...filterValues];
   } else {
     filterValues = ["Select a filter value", ...filterValues.reverse()];
